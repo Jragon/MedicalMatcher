@@ -25,7 +25,7 @@ MedicalMatcher.Pot.prototype.reset = function(x, y, data){
   this.loadTexture(data.asset);
   this.row = data.row;
   this.col = data.col;
-}
+};
 
 MedicalMatcher.Pot.prototype.kill = function(){
   this.loadTexture('greyPot');
@@ -35,4 +35,4 @@ MedicalMatcher.Pot.prototype.kill = function(){
   this.game.time.events.add(this.state.ANIMATION_TIME/5, function(){
     Phaser.Sprite.prototype.kill.call(this);
   }, this);
-}
+};
