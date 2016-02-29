@@ -28,9 +28,24 @@ MedicalMatcher.GameState = {
     this.movesText = this.game.add.text(this.boardSprites.x - (this.BLOCK_SIZE + 4)/2 + 195, 10, "Moves: " + this.moves, {font: "32px Arial", fill: "#0000"});
     this.score = 0;
     this.scoreText = this.game.add.text(this.boardSprites.x - (this.BLOCK_SIZE + 4)/2, 10, "Score: " + this.score, {font: "32px Arial", fill: "#0000"});
+    
+    var comboTextBackground = this.add.bitmapData(this.BLOCK_SIZE + 4, this.BLOCK_SIZE + 4);
+    comboTextBackground.ctx.fillStyle = '#111';
+    comboTextBackground.ctx.fillRect(0, 0, this.BLOCK_SIZE + 4, this.BLOCK_SIZE + 4);
+    this.comboTextBackground = this.game.add.sprite(0, 0, comboTextBackground);
+    this.comboTextBackground.anchor.setTo(0.5);
+    this.comboTextBackground.alpha = 0.5;
+    
     this.comboText = this.game.add.text(0, 0, "", {font: "50px Arial", fill: "#f0f"});
-    this.comboText.alpha = 0;
+    // this.comboText.alpha = 0;
     this.comboText.anchor.setTo(0.5);
+ 
+    
+    this.comboTextGroup = this.game.add.group();
+    this.comboTextGroup.add(this.comboTextBackground);
+    this.comboTextGroup.add(this.comboText);
+    this.comboTextGroup.alpha = 0;
+    
   },
   
   createPot: function(x, y, data){
@@ -183,11 +198,21 @@ MedicalMatcher.GameState = {
       this.scoreText.text = 'Score: ' + score;
       this.movesSinceLastCombo = 0;
       
-      this.comboText.text = comboName;
-      this.comboText.x = this.game.world.centerX;
-      this.comboText.y = this.game.world.centerY - 100;
+      this.comboText.text = comboName;      
+
+      this.comboTextBackground.height = this.comboText.height;
+      this.comboTextBackground.width = this.comboText.width;
+
+      this.comboTextGroup.scale.x = 0.5;
+      this.comboTextGroup.scale.y = 0.5;
+      
+      this.comboTextGroup.x = this.game.world.centerX;
+      this.comboTextGroup.y = this.game.world.centerY - 100;
+      
       // combo tween
-      this.game.add.tween(this.comboText).to({ alpha: 1 }, this.ANIMATION_TIME*1.5, null, true, 0, 0, true);
+      this.game.add.tween(this.comboTextGroup).to({ alpha: 1 }, this.ANIMATION_TIME*2).yoyo(true).start();
+      this.game.add.tween(this.comboTextGroup.scale).to({ x: 1.5, y: 1.5 }, this.ANIMATION_TIME*2).yoyo(true).start();
+
       theUserDidNotEvenFindAChainWhatALoser = false;
     }
   },
