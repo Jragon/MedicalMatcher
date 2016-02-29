@@ -26,6 +26,9 @@ MedicalMatcher.GameState = {
     this.moves = 0;
     this.movesSinceLastCombo = 0;
     this.movesText = this.game.add.text(this.boardSprites.x - (this.BLOCK_SIZE + 4)/2 + 195, 10, "Moves: " + this.moves, {font: "32px Arial", fill: "#0000"});
+    
+    this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem = 0;
+    
     this.score = 0;
     this.scoreText = this.game.add.text(this.boardSprites.x - (this.BLOCK_SIZE + 4)/2, 10, "Score: " + this.score, {font: "32px Arial", fill: "#0000"});
     
@@ -195,7 +198,7 @@ MedicalMatcher.GameState = {
       console.log(this.movesSinceLastCombo);
       console.log(score);
       this.score += score;
-      this.scoreText.text = 'Score: ' + score;
+      // this.scoreText.text = 'Score: ' + score;
       this.movesSinceLastCombo = 0;
       
       this.comboText.text = comboName;      
@@ -245,17 +248,23 @@ MedicalMatcher.GameState = {
   },
   
   updateBoard: function(){
-    this.score += this.board.findAllChains().length;
+    this.score += Math.floor(0.75*this.board.findAllChains().length*this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem);
     this.scoreText.text = 'Score: ' + this.score;
+    
+    // useful output testy thing
+    // console.log('score: ' + this.score + ', no conseq: ' + this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem + ', increase: ' + Math.floor(this.board.findAllChains().length*this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem) + ', no chains: ' + this.board.findAllChains().length);
     
     this.board.clearChains();
     this.board.dropDown();
     
     this.game.time.events.add(this.ANIMATION_TIME + 100, function() {
-      if(this.board.findAllChains().length > 0)
+      if(this.board.findAllChains().length > 0){
+        this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem++;
         this.updateBoard();
-      else
-        this.clearSelection();
-    }, this)
+      }else{
+        this.clearSelection(); 
+        this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem = 0;
+      }
+    }, this);
   }
 };
