@@ -161,13 +161,15 @@ MedicalMatcher.GameState = {
       console.log(comboName);
     } else if ((pot1Chain.isCombo && (pot2Chain.chainLength >= 3)) || (pot2Chain.isCombo && (pot1Chain.chainLength >= 3))){
       // this is a pretty good combo ... 3 chains
-      comboName = 'OKAY COOL \n' + pot1Chain.vertical.length + ' x ' + pot1Chain.horizontal.length + ' x ' + pot2Chain.chainLength;
+      comboName = 'OKAY COOL'
       
-      if (pot1Chain.isCombo)
+      if (pot1Chain.isCombo){
+        comboName = comboName +  pot1Chain.vertical.length + ' x ' + pot1Chain.horizontal.length + ' x ' + pot2Chain.chainLength;
         score = pot1Chain.vertical.length * pot1Chain.horizontal.length * pot2Chain.chainLength;
-      else
-        score = pot2Chain.vertical.length * pot2Chain.horizontal.length * pot2Chain.chainLength;
-      
+      }else{
+        comboName = comboName +  pot2Chain.vertical.length + ' x ' + pot2Chain.horizontal.length + ' x ' + pot1Chain.chainLength;
+        score = pot2Chain.vertical.length * pot2Chain.horizontal.length * pot1Chain.chainLength;
+      }
       console.log(comboName);
     } else if (pot1Chain.isCombo){
       comboName = pot1Chain.horizontal.length + ' x ' + pot1Chain.vertical.length;
@@ -195,8 +197,8 @@ MedicalMatcher.GameState = {
     
     if(!theUserDidNotEvenFindAChainWhatALoser){
       score = Math.floor(3*(score / this.movesSinceLastCombo) + 1);
-      console.log(this.movesSinceLastCombo);
-      console.log(score);
+      console.log('Moves Since Last Combo: ' + this.movesSinceLastCombo);
+      console.log('Score: ' + score);
       this.score += score;
       // this.scoreText.text = 'Score: ' + score;
       this.movesSinceLastCombo = 0;
@@ -252,7 +254,7 @@ MedicalMatcher.GameState = {
     this.scoreText.text = 'Score: ' + this.score;
     
     // useful output testy thing
-    // console.log('score: ' + this.score + ', no conseq: ' + this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem + ', increase: ' + Math.floor(this.board.findAllChains().length*this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem) + ', no chains: ' + this.board.findAllChains().length);
+    console.log('score: ' + this.score + ', no conseq: ' + this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem + ', increase: ' + Math.floor(this.board.findAllChains().length*this.numberOfChainsThatHaveFallenFromTheHeavensIdkWhatToCallThem) + ', no pots: ' + this.board.findAllChains().length);
     
     this.board.clearChains();
     this.board.dropDown();
